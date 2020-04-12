@@ -7,6 +7,8 @@
  * Released under the MIT License.
  */
 
+console.log("markdown-toc invoked");
+
 var utils = require('./lib/utils');
 var querystring = require('querystring');
 
@@ -50,8 +52,8 @@ function generate(options) {
   var stripFirst = opts.firsth1 === false;
   if (typeof opts.linkify === 'undefined') opts.linkify = true;
 
-  return function(md) {
-    md.renderer.render = function(tokens) {
+  return function (md) {
+    md.renderer.render = function (tokens) {
       tokens = tokens.slice();
       var seen = {};
       var len = tokens.length, i = 0, num = 0;
@@ -168,7 +170,7 @@ function bullets(arr, options) {
  */
 
 function highest(arr) {
-  var res = arr.slice().sort(function(a, b) {
+  var res = arr.slice().sort(function (a, b) {
     return a.lvl - b.lvl;
   });
   if (res && res.length) {
@@ -207,7 +209,9 @@ function linkify(tok, options) {
  */
 
 function titleize(str, opts) {
-  if (opts && opts.strip) { return strip(str, opts); }
+  if (opts && opts.strip) {
+    return strip(str, opts);
+  }
   if (opts && opts.titleize === false) return str;
   if (opts && typeof opts.titleize === 'function') {
     return opts.titleize(str, opts);
