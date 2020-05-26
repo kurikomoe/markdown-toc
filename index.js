@@ -28,9 +28,18 @@ module.exports = toc;
  */
 
 function toc(str, options) {
-  return new utils.Remarkable()
+  let tmp = new utils.Remarkable()
     .use(generate(options))
     .render(str);
+
+  for (let i = 0; i < tmp.json.length; i++) {
+    let ret = /(.*)<spoiler>.*<\/spoiler>/g.exec(tmp.json[i].content);
+    if (ret) {
+      tmp.json[i].content = ret[1];
+    }
+  }
+
+  return tmp;
 }
 
 /**
@@ -48,7 +57,7 @@ toc.insert = require('./lib/insert');
  */
 
 function generate(options) {
-  var opts = utils.merge({firsth1: true, maxdepth: 6}, options);
+  var opts = utils.merge({ firsth1: true, maxdepth: 6 }, options);
   var stripFirst = opts.firsth1 === false;
   if (typeof opts.linkify === 'undefined') opts.linkify = true;
 
@@ -126,7 +135,7 @@ function generate(options) {
  */
 
 function bullets(arr, options) {
-  var opts = utils.merge({indent: '  '}, options);
+  var opts = utils.merge({ indent: '  ' }, options);
   opts.chars = opts.chars || opts.bullets || ['-', '*', '+'];
   var unindent = 0;
 
